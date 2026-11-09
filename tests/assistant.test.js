@@ -12,11 +12,21 @@ test('sugestões cobrem os temas prometidos', () => {
 });
 
 test('perguntas digitadas reconhecem variações e acentos', () => {
+  assert.equal(detectEnergyTopic('Olá, tudo bem?'), 'greeting');
+  assert.equal(detectEnergyTopic('Boa noite'), 'greeting');
+  assert.equal(detectEnergyTopic('Oi, quanto custa instalar solar?'), 'solarCost');
   assert.equal(detectEnergyTopic('Quanto economizo com o chuveiro?'), 'bath');
   assert.equal(detectEnergyTopic('A energia solar vai zerar a fatura?'), 'solarBill');
   assert.equal(detectEnergyTopic('Qual é o preço das placas solares?'), 'solarCost');
   assert.equal(detectEnergyTopic('Banho e solar: qual compensa?'), 'compare');
   assert.equal(detectEnergyTopic('De onde vem esse cálculo?'), 'sources');
+});
+
+test('saudações recebem uma resposta acolhedora e delimitada ao estudo', () => {
+  const answer = answerEnergyQuestion('Oi, tudo bem?', calculate(input));
+  assert.equal(answer.topic, 'greeting');
+  assert.match(answer.text, /Olá!/);
+  assert.match(answer.text, /conta de luz/);
 });
 
 test('resposta usa o resultado atualizado e traz fonte', () => {

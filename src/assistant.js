@@ -41,6 +41,7 @@ function detectTopic(question) {
   if (solar) return 'solarHow';
   if (bath) return 'bath';
   if (has(/\b(conta|fatura|tarifa|kwh|consumo|energia eletrica)\b/)) return 'bill';
+  if (/^(oi|ola|e ai|opa|bom dia|boa tarde|boa noite|tudo bem|como vai|como voce esta|como esta)\b/.test(text)) return 'greeting';
   return 'unknown';
 }
 
@@ -49,6 +50,10 @@ function answerEnergyQuestion(question, result) {
   const money = (value) => value.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
   const topic = detectTopic(question);
   const answers = {
+    greeting: {
+      text: 'Olá! Estou bem e pronto para ajudar com a sua conta de luz. Posso comparar banhos mais curtos e energia solar, explicar os números e mostrar as fontes. Abra os temas sugeridos ou escreva sua pergunta.',
+      sources: []
+    },
     first: {
       text: `Comece conferindo o consumo na fatura e a potência do chuveiro. Neste cenário, reduzir cada banho como você propôs evitaria cerca de ${number(result.banhoEconomia)} kWh por mês, sem comprar equipamento. Para avaliar solar, peça um orçamento para o imóvel.`,
       sources: ['analysis', 'aneelTariff']
