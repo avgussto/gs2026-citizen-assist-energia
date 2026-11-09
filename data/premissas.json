@@ -1,0 +1,23 @@
+{
+  "local": "São Paulo, SP",
+  "consulta": "2026-11-09",
+  "periodoDias": 30,
+  "consumoMensalKwh": 200,
+  "tarifaReaisKwh": 0.9,
+  "moradores": 4,
+  "potenciaChuveiroWatts": 5500,
+  "banhoAtualMinutos": 10,
+  "banhoPropostoMinutos": 8,
+  "potenciaSolarKwp": 2,
+  "irradiacaoHorasSolPico": 4.5,
+  "fatorDesempenhoSolar": 0.75,
+  "precoSolarInstaladoReais": 7240,
+  "origem": {
+    "consumoMensalKwh": "Cenário ilustrativo, não é média oficial da cidade; comparação com dados EPE no docs/analise.md.",
+    "tarifaReaisKwh": "Hipótese didática, não corresponde à fatura completa. Substituir pelo valor da própria conta.",
+    "chuveiro": "Potência e tempos de banho hipotéticos; conferir a etiqueta do equipamento e o hábito real.",
+    "irradiacaoHorasSolPico": "Hipótese arredondada para exercício em São Paulo; conferir a coordenada e inclinação no CRESESB SunData antes de um projeto real.",
+    "fatorDesempenhoSolar": "Hipótese conservadora de perdas de 25% baseada na premissa de PR 75% usada pela Greener no estudo de 2025.",
+    "precoSolarInstaladoReais": "Greener, pesquisa de junho de 2025: sistema instalado de 2 kWp a R$ 3,62/Wp; 2000 Wp × R$ 3,62/Wp = R$ 7.240. Média nacional, não orçamento."
+  }
+}
