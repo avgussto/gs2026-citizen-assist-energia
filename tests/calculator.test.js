@@ -1,6 +1,8 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { calculate } from '../src/calculator.js';
+import '../src/calculator.js';
+
+const { calculate } = globalThis;
 
 const input = { consumo: 200, tarifa: 0.9, moradores: 4, potenciaChuveiro: 5500, banhoAtual: 10, banhoProposto: 8, dias: 30, solarKwp: 2, horasSol: 4.5, desempenho: 0.75, custoSolar: 7240 };
 

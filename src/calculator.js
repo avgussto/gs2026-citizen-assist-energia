@@ -1,4 +1,4 @@
-export function calculate(input) {
+function calculate(input) {
   const { consumo, tarifa, moradores, potenciaChuveiro, banhoAtual, banhoProposto, dias, solarKwp, horasSol, desempenho, custoSolar } = input;
   const values = Object.values(input);
   if (values.some((value) => !Number.isFinite(value))) throw new Error('Preencha todos os campos com números válidos.');
@@ -34,3 +34,5 @@ export function calculate(input) {
     consumoAposBanho: consumo - banhoEconomia
   };
 }
+
+globalThis.calculate = calculate;

@@ -1,5 +1,3 @@
-import { calculate } from './calculator.js';
-
 const form = document.querySelector('#energy-form');
 const error = document.querySelector('#form-error');
 const answer = document.querySelector('#answer');
@@ -86,4 +84,5 @@ async function initialize() {
   }
 }
 
-initialize();
+if (location.protocol === 'file:') render();
+else initialize();

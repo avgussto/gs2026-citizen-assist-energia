@@ -18,7 +18,7 @@ Requer Node.js 20 ou superior. No terminal, dentro desta pasta:
 npm start
 ```
 
-Abra `http://127.0.0.1:4173`. Para conferir os cálculos:
+Abra `http://127.0.0.1:4173`. Também é possível abrir `index.html` diretamente para uma demonstração rápida; nesse modo, a página usa os valores iniciais do próprio HTML e as premissas fixas descritas em `data/premissas.json`. Para conferir os cálculos:
 
 ```bash
 npm test
