@@ -1,11 +1,15 @@
 const form = document.querySelector('#energy-form');
 const error = document.querySelector('#form-error');
-const answer = document.querySelector('#answer');
-const questions = document.querySelectorAll('[data-question]');
+const chatPanel = document.querySelector('#chat-panel');
+const chatLog = document.querySelector('#chat-log');
+const chatInput = document.querySelector('#chat-input');
+const chatForm = document.querySelector('#chat-form');
+const chatSuggestions = document.querySelector('#chat-suggestions');
+const openButtons = document.querySelectorAll('[data-open-assistant]');
 const number = (value, digits = 0) => value.toLocaleString('pt-BR', { minimumFractionDigits: digits, maximumFractionDigits: digits });
 const currency = (value) => value.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
 let result;
-let activeQuestion = null;
+let lastOpener = null;
 let assumptions = { periodoDias: 30, irradiacaoHorasSolPico: 4.5, fatorDesempenhoSolar: 0.75 };
 
 function value(id) { return Number(document.getElementById(id).value); }
@@ -20,18 +24,63 @@ function inputValues() {
   };
 }
 
-function responseFor(question) {
-  if (!result) return 'Atualize a comparação para receber uma orientação.';
-  if (question === 'first') {
-    return `Pelos seus dados, reduzir o banho pouparia cerca de ${number(result.banhoEconomia, 1)} kWh por mês, sem compra de equipamento. Comece por medir o tempo e conferir a potência do chuveiro. A estimativa só se mantém se o hábito mudar todos os dias.`;
+function addMessage(kind, text, sources = []) {
+  const message = document.createElement('div');
+  message.className = `chat-message chat-message-${kind}`;
+  const body = document.createElement('p');
+  body.textContent = text;
+  message.append(body);
+  if (sources.length) {
+    const references = document.createElement('div');
+    references.className = 'chat-references';
+    for (const source of sources) {
+      const link = document.createElement('a');
+      link.href = source.url;
+      link.textContent = source.label;
+      if (!source.url.startsWith('#')) {
+        link.target = '_blank';
+        link.rel = 'noopener noreferrer';
+      }
+      references.append(link);
+    }
+    message.append(references);
   }
-  if (question === 'solar') {
-    return `Não. O sistema geraria aproximadamente ${number(result.geracaoSolar, 1)} kWh por mês neste cenário, dos quais até ${number(result.solarAproveitavel, 1)} kWh foram considerados aqui. A fatura ainda pode incluir custo de disponibilidade, tributos e cobrança pelo uso da rede. Consulte as regras da ANEEL e peça um projeto e orçamento para o imóvel.`;
-  }
-  return `Banhos mais curtos evitam aproximadamente ${number(result.banhoEconomiaAnual, 1)} kWh de consumo da rede em 12 meses iguais. A geração solar estimada é de ${number(result.solarEnergiaAnual, 1)} kWh no mesmo período, mas gerar não é o mesmo que evitar emissões nessa proporção. A matriz elétrica brasileira já inclui fontes renováveis; fabricação e descarte dos painéis também têm impactos. Sem estudo do ciclo de vida, não atribuímos um número de CO₂ evitado.`;
+  chatLog.append(message);
+  chatLog.scrollTop = chatLog.scrollHeight;
 }
 
-function render() {
+function resetConversation(updated = false) {
+  chatLog.replaceChildren();
+  addMessage('assistant', updated
+    ? 'Dados atualizados. A conversa anterior foi reiniciada para que as próximas respostas usem os novos números.'
+    : 'Olá! Posso explicar os cálculos, comparar as opções e mostrar as fontes. Escolha uma pergunta ou escreva a sua.');
+  chatInput.value = '';
+}
+
+function ask(question) {
+  const clean = question.trim();
+  if (!clean || !result) return;
+  addMessage('user', clean);
+  const response = answerEnergyQuestion(clean, result);
+  addMessage('assistant', response.text, response.sources);
+  chatInput.value = '';
+  chatInput.focus();
+}
+
+function openAssistant(opener) {
+  lastOpener = opener;
+  chatPanel.hidden = false;
+  openButtons.forEach((button) => button.setAttribute('aria-expanded', 'true'));
+  chatInput.focus();
+}
+
+function closeAssistant() {
+  chatPanel.hidden = true;
+  openButtons.forEach((button) => button.setAttribute('aria-expanded', 'false'));
+  lastOpener?.focus();
+}
+
+function render(resetChat = false) {
   try {
     if (!form.checkValidity()) {
       form.reportValidity();
@@ -52,19 +101,31 @@ function render() {
       ? ' Atenção: os banhos calculados consomem mais que o total informado; confira as entradas.'
       : '';
     put('interpretation-text', `O banho proposto reduziria cerca de ${number(result.banhoEconomia, 1)} kWh/mês sem investimento inicial. O sistema solar exige ${currency(result.solarCusto)} de investimento de referência e avaliação técnica do telhado. Os valores financeiros são aproximações brutas.${warning}`);
-    if (activeQuestion) answer.textContent = responseFor(activeQuestion);
+    if (resetChat) resetConversation(true);
   } catch (cause) {
     error.textContent = cause.message;
     error.hidden = false;
   }
 }
 
-form.addEventListener('submit', (event) => { event.preventDefault(); render(); });
-questions.forEach((button) => button.addEventListener('click', () => {
-  activeQuestion = button.dataset.question;
-  questions.forEach((item) => item.setAttribute('aria-pressed', String(item === button)));
-  answer.textContent = responseFor(activeQuestion);
-}));
+form.addEventListener('submit', (event) => { event.preventDefault(); render(true); });
+openButtons.forEach((button) => button.addEventListener('click', () => openAssistant(button)));
+document.querySelector('#chat-close').addEventListener('click', closeAssistant);
+document.addEventListener('keydown', (event) => {
+  if (event.key === 'Escape' && !chatPanel.hidden) closeAssistant();
+});
+chatForm.addEventListener('submit', (event) => {
+  event.preventDefault();
+  ask(chatInput.value);
+});
+for (const question of assistantSuggestions) {
+  const button = document.createElement('button');
+  button.type = 'button';
+  button.textContent = question;
+  button.addEventListener('click', () => ask(question));
+  chatSuggestions.append(button);
+}
+resetConversation();
 async function initialize() {
   try {
     const response = await fetch('/data/premissas.json');

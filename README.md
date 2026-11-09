@@ -30,7 +30,8 @@ Não há instalação de pacotes, cadastro, banco de dados ou chave de API.
 
 1. Informe consumo mensal e valor por kWh. Os valores iniciais são **ilustrativos**; não são uma fatura real.
 2. Ajuste quantidade de pessoas, potência do chuveiro, tempo de banho e custo de instalação solar.
-3. Clique em **Atualizar comparação**. Leia os resultados, as limitações e as respostas às perguntas guiadas.
+3. Clique em **Atualizar comparação**. Leia os resultados e as limitações.
+4. Use o botão flutuante **Perguntar** ou **Abrir conversa** para escolher uma pergunta sugerida ou digitar a sua. O assistente responde sobre os temas estudados e mostra as fontes. Se não reconhecer a pergunta, informa seu limite. Ao atualizar a simulação, a conversa é reiniciada para não manter números antigos.
 
 A comparação usa a mesma casa, o mesmo mês de 30 dias e 12 meses de referência. O consumo evitado por banhos é limitado ao consumo da casa; a geração solar acima do consumo é exibida separadamente e não recebe valor financeiro. O valor anual solar é um **máximo bruto didático**, não uma promessa de economia na fatura.
 

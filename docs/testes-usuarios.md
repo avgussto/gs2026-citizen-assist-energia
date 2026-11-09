@@ -12,6 +12,7 @@ Convidar 2 ou 3 pessoas do público-alvo. Registrar apenas um código como `P1`,
 2. Mudar o banho proposto para **7 minutos** e explicar quanto a casa poderia reduzir em energia. Perguntar: “Isso é economia garantida na conta?”
 3. Consultar a opção solar e responder: “A conta fica zerada? O que falta verificar antes de instalar?”
 4. Encontrar pelo menos uma fonte e uma limitação da estimativa.
+5. Abrir o assistente pelo balão, digitar “Quanto economizo no banho?” e dizer se a resposta e a fonte ficaram claras. Depois digitar uma pergunta fora do tema e verificar se o limite do assistente é compreensível.
 
 ## Registro por participante
 

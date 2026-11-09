@@ -17,7 +17,7 @@ test('scripts do cálculo resolvem ao abrir o HTML como arquivo', () => {
   const htmlPath = resolve('index.html');
   const html = readFileSync(htmlPath, 'utf8');
   const scripts = [...html.matchAll(/<script src="([^"]+)"/g)].map((match) => match[1]);
-  assert.deepEqual(scripts, ['./src/calculator.js', './src/main.js']);
+  assert.deepEqual(scripts, ['./src/calculator.js', './src/assistant.js', './src/main.js']);
   for (const source of scripts) {
     const scriptPath = fileURLToPath(new URL(source, pathToFileURL(htmlPath)));
     assert.ok(existsSync(scriptPath), `${source} resolve para ${scriptPath}, que não existe`);

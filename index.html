@@ -8,6 +8,7 @@
     <title>Energia em casa | Citizen Assist AI</title>
     <link rel="stylesheet" href="./styles.css">
     <script src="./src/calculator.js" defer></script>
+    <script src="./src/assistant.js" defer></script>
     <script src="./src/main.js" defer></script>
   </head>
   <body>
@@ -97,8 +98,8 @@
 
       <section class="assistant-band" aria-labelledby="assistant-title">
         <div class="shell assistant-layout">
-          <div><p class="section-number">3 / Pergunte ao assistente</p><h2 id="assistant-title">O que esses números significam?</h2><p>Escolha uma pergunta. A resposta usa os dados da sua simulação e mostra onde conferir a explicação.</p></div>
-          <div class="assistant-box"><div class="question-list" role="group" aria-label="Perguntas disponíveis"><button type="button" data-question="first">Por onde começo?</button><button type="button" data-question="solar">Solar zera minha conta?</button><button type="button" data-question="environment">Qual o impacto ambiental?</button></div><div class="answer" id="answer" aria-live="polite"><p>Escolha uma pergunta para receber uma orientação.</p></div></div>
+          <div><p class="section-number">3 / Pergunte ao assistente</p><h2 id="assistant-title">Ainda ficou alguma dúvida sobre sua conta?</h2></div>
+          <div class="assistant-invitation"><p>Escolha uma pergunta ou escreva com suas palavras. O assistente usa a última comparação que você atualizou e indica as fontes das respostas.</p><button type="button" class="assistant-open" data-open-assistant aria-controls="chat-panel" aria-expanded="false">Abrir conversa <span aria-hidden="true">↗</span></button><span>Respostas sobre os temas deste estudo, sem IA generativa.</span></div>
         </div>
       </section>
 
@@ -111,5 +112,11 @@
       <section class="sources shell" id="fontes" aria-labelledby="sources-title"><p class="section-number">5 / Referências</p><h2 id="sources-title">Dados que você pode verificar</h2><ul><li><a href="https://www.epe.gov.br/pt/publicacoes-dados-abertos/publicacoes/anuario-estatistico-de-energia-eletrica" target="_blank" rel="noopener noreferrer">EPE — Anuário Estatístico de Energia Elétrica</a><span>Contexto do consumo residencial. O cenário de 200 kWh é ilustrativo.</span></li><li><a href="https://www.gov.br/aneel/pt-br/centrais-de-conteudos/relatorios-e-indicadores/tarifas-e-informacoes-economico-financeiras" target="_blank" rel="noopener noreferrer">ANEEL — Tarifas e composição da fatura</a><span>Tarifas variam e não incluem todos os itens da conta.</span></li><li><a href="https://www.cresesb.cepel.br/?section=sundata" target="_blank" rel="noopener noreferrer">CRESESB — SunData</a><span>Consulta de irradiação para dimensionamento solar.</span></li><li><a href="https://canalsolar.com.br/wp-content/uploads/2025/09/link.pdf" target="_blank" rel="noopener noreferrer">Greener — Pesquisa GD, junho de 2025</a><span>Referência de preço de 2 kWp e fator de desempenho.</span></li><li><a href="https://www.gov.br/aneel/pt-br/assuntos/geracao-distribuida/" target="_blank" rel="noopener noreferrer">ANEEL — Micro e minigeração distribuída</a><span>Regras e custos de disponibilidade.</span></li></ul><p class="source-date">Fontes consultadas em 09/11/2026. Detalhes, premissas e cálculos estão no repositório.</p></section>
     </main>
     <footer class="site-footer"><div class="shell"><strong>Citizen Assist AI</strong><span>Energia explicada para decisões mais conscientes.</span><a href="#inicio">Voltar ao início ↑</a></div></footer>
+    <button type="button" class="chat-launcher" id="chat-launcher" data-open-assistant aria-controls="chat-panel" aria-expanded="false" aria-label="Abrir assistente de energia"><span class="chat-launcher-icon" aria-hidden="true">✳</span><span>Perguntar</span></button>
+    <section class="chat-panel" id="chat-panel" role="dialog" aria-labelledby="chat-title" hidden>
+      <div class="chat-header"><div><p>Citizen Assist AI</p><h2 id="chat-title">Assistente de energia</h2></div><button type="button" id="chat-close" aria-label="Fechar assistente">×</button></div>
+      <div class="chat-log" id="chat-log" role="log" aria-live="polite" aria-relevant="additions"></div>
+      <div class="chat-bottom"><p class="chat-caption">Perguntas que posso responder</p><div class="chat-suggestions" id="chat-suggestions" role="group" aria-label="Perguntas sugeridas"></div><form id="chat-form"><label for="chat-input">Sua pergunta</label><div class="chat-entry"><input id="chat-input" type="text" maxlength="280" autocomplete="off" placeholder="Ex.: quanto custa instalar solar?" required><button type="submit">Enviar</button></div></form><p class="chat-disclaimer">As estimativas não substituem uma fatura ou avaliação técnica.</p></div>
+    </section>
   </body>
 </html>
