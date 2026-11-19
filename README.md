@@ -46,4 +46,6 @@ A comparação usa a mesma casa, o mesmo mês de 30 dias e 12 meses de referênc
 
 Não calcula a fatura completa, tributos, bandeiras tarifárias, parcelas de uso da rede, compensação de créditos, manutenção, financiamento ou variação sazonal. A irradiação e o custo solar de referência devem ser substituídos por dados do local e por orçamento profissional antes de uma decisão de compra. A aplicação não dimensiona nem aprova instalações elétricas.
 
-Prazo informado para a entrega: **19/11/2026**. O arquivo `.txt` exigido pelo enunciado será criado quando os links do repositório e do vídeo não listado estiverem disponíveis.
+## Vídeo de apresentação
+
+[Global Solutions - SERS](https://youtu.be/kYq6kptzg-A) (YouTube, não listado, 2:10): demonstração técnica seguindo o [roteiro](docs/roteiro-video.md).
