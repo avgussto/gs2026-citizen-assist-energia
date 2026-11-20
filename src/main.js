@@ -10,7 +10,7 @@ const number = (value, digits = 0) => value.toLocaleString('pt-BR', { minimumFra
 const currency = (value) => value.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
 let result;
 let lastOpener = null;
-let assumptions = { periodoDias: 30, irradiacaoHorasSolPico: 4.5, fatorDesempenhoSolar: 0.75 };
+let assumptions = { periodoDias: 30, irradiacaoHorasSolPico: 4.5, fatorDesempenhoSolar: 0.75, fatorEmissaoTco2PorMwh: 0.0385 };
 
 function value(id) { return Number(document.getElementById(id).value); }
 function put(id, text) { document.getElementById(id).textContent = text; }
@@ -20,7 +20,8 @@ function inputValues() {
     consumo: value('consumo'), tarifa: value('tarifa'), moradores: value('moradores'),
     potenciaChuveiro: value('potencia'), banhoAtual: value('banho-atual'), banhoProposto: value('banho-proposto'),
     dias: assumptions.periodoDias, solarKwp: value('solar-kwp'), horasSol: assumptions.irradiacaoHorasSolPico,
-    desempenho: assumptions.fatorDesempenhoSolar, custoSolar: value('solar-custo')
+    desempenho: assumptions.fatorDesempenhoSolar, custoSolar: value('solar-custo'),
+    ligacao: document.getElementById('ligacao').value, vazaoChuveiro: value('vazao'), fatorEmissao: assumptions.fatorEmissaoTco2PorMwh
   };
 }
 
@@ -93,14 +94,20 @@ function render(resetChat = false) {
     put('bath-energy', `${number(result.banhoEconomia, 1)} kWh`);
     put('bath-value', currency(result.banhoValorAnual));
     put('bath-remaining', `${number(result.consumoAposBanho, 1)} kWh/mês`);
+    put('bath-share', `${number(result.banhoParticipacao * 100, 0)}% do consumo`);
+    put('bath-water', `${number(result.aguaEconomiaMensalLitros, 0)} L/mês`);
+    put('bath-co2', `${number(result.banhoCo2AnualKg, 1)} kg/ano`);
     put('solar-energy', `${number(result.geracaoSolar, 1)} kWh`);
     put('solar-value', currency(result.solarValorBrutoAnual));
     put('solar-cost', currency(result.solarCusto));
     put('solar-excess', `${number(result.solarExcedente, 1)} kWh/mês`);
+    put('solar-usable', `${number(result.solarAproveitavel, 1)} kWh/mês`);
+    put('solar-payback', Number.isFinite(result.solarPaybackAnos) ? `${number(result.solarPaybackAnos, 1)} anos` : 'indefinido');
+    put('solar-co2', `${number(result.solarCo2AnualKg, 1)} kg/ano`);
     const warning = result.banhoBase > result.consumo
       ? ' Atenção: os banhos calculados consomem mais que o total informado; confira as entradas.'
       : '';
-    put('interpretation-text', `O banho proposto reduziria cerca de ${number(result.banhoEconomia, 1)} kWh/mês sem investimento inicial. O sistema solar exige ${currency(result.solarCusto)} de investimento de referência e avaliação técnica do telhado. Os valores financeiros são aproximações brutas.${warning}`);
+    put('interpretation-text', `O banho proposto reduziria cerca de ${number(result.banhoEconomia, 1)} kWh/mês sem investimento inicial. O sistema solar exige ${currency(result.solarCusto)} de investimento de referência, com retorno simples de cerca de ${Number.isFinite(result.solarPaybackAnos) ? number(result.solarPaybackAnos, 1) + ' anos' : 'prazo indefinido'}, e avaliação técnica do telhado. Os valores financeiros são aproximações brutas.${warning}`);
     if (resetChat) resetConversation(true);
   } catch (cause) {
     error.textContent = cause.message;
@@ -135,7 +142,8 @@ async function initialize() {
       consumo: assumptions.consumoMensalKwh, tarifa: assumptions.tarifaReaisKwh,
       moradores: assumptions.moradores, potencia: assumptions.potenciaChuveiroWatts,
       'banho-atual': assumptions.banhoAtualMinutos, 'banho-proposto': assumptions.banhoPropostoMinutos,
-      'solar-kwp': assumptions.potenciaSolarKwp, 'solar-custo': assumptions.precoSolarInstaladoReais
+      'solar-kwp': assumptions.potenciaSolarKwp, 'solar-custo': assumptions.precoSolarInstaladoReais,
+      ligacao: assumptions.ligacao, vazao: assumptions.vazaoChuveiroLitrosMinuto
     };
     for (const [id, entry] of Object.entries(fields)) document.getElementById(id).value = entry;
     render();

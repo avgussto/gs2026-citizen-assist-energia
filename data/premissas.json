@@ -1,23 +1,31 @@
 {
   "local": "São Paulo, SP",
-  "consulta": "2026-11-09",
+  "consulta": "2026-11-19",
   "periodoDias": 30,
-  "consumoMensalKwh": 200,
+  "consumoMensalKwh": 250,
   "tarifaReaisKwh": 0.9,
+  "ligacao": "bifasico",
   "moradores": 4,
   "potenciaChuveiroWatts": 5500,
   "banhoAtualMinutos": 10,
   "banhoPropostoMinutos": 8,
+  "vazaoChuveiroLitrosMinuto": 4,
   "potenciaSolarKwp": 2,
   "irradiacaoHorasSolPico": 4.5,
   "fatorDesempenhoSolar": 0.75,
   "precoSolarInstaladoReais": 7240,
+  "fatorEmissaoTco2PorMwh": 0.0385,
+  "custoDisponibilidadeKwh": { "monofasico": 30, "bifasico": 50, "trifasico": 100 },
   "origem": {
-    "consumoMensalKwh": "Cenário ilustrativo, não é média oficial da cidade; comparação com dados EPE no docs/analise.md.",
-    "tarifaReaisKwh": "Hipótese didática, não corresponde à fatura completa. Substituir pelo valor da própria conta.",
-    "chuveiro": "Potência e tempos de banho hipotéticos; conferir a etiqueta do equipamento e o hábito real.",
+    "consumoMensalKwh": "Cenário estimado para família de 4 pessoas com chuveiro elétrico. Revisado de 200 para 250 kWh/mês para que o chuveiro (110 kWh) represente 44% do consumo, e não 55%. Substituir pelo consumo da própria conta; a EPE publica médias por UF.",
+    "tarifaReaisKwh": "Hipótese didática da parcela variável por kWh, não corresponde à fatura completa. Substituir pelo valor da própria conta.",
+    "ligacao": "Tipo de ligação mais comum em residências com chuveiro elétrico; define o custo de disponibilidade.",
+    "custoDisponibilidadeKwh": "Dado regulatório: mínimo faturável de 30, 50 ou 100 kWh/mês para ligação monofásica, bifásica ou trifásica (REN ANEEL 1.000/2021). Mesmo com geração solar, esse mínimo continua na conta.",
+    "chuveiro": "Potência (posição inverno) e tempos de banho estimados; conferir a etiqueta do equipamento e o hábito real.",
+    "vazaoChuveiroLitrosMinuto": "Hipótese: chuveiros elétricos costumam ficar entre 3 e 6 L/min, conforme modelo e posição. Medir enchendo um balde por 1 minuto.",
     "irradiacaoHorasSolPico": "Hipótese arredondada para exercício em São Paulo; conferir a coordenada e inclinação no CRESESB SunData antes de um projeto real.",
     "fatorDesempenhoSolar": "Hipótese conservadora de perdas de 25% baseada na premissa de PR 75% usada pela Greener no estudo de 2025.",
-    "precoSolarInstaladoReais": "Greener, pesquisa de junho de 2025: sistema instalado de 2 kWp a R$ 3,62/Wp; 2000 Wp × R$ 3,62/Wp = R$ 7.240. Média nacional, não orçamento."
+    "precoSolarInstaladoReais": "Greener, pesquisa de junho de 2025 (p. 55): sistema instalado de 2 kWp a R$ 3,62/Wp; 2000 Wp × R$ 3,62/Wp = R$ 7.240. Média nacional, não orçamento.",
+    "fatorEmissaoTco2PorMwh": "Dado público: fator médio anual de emissão do Sistema Interligado Nacional em 2023, 38,5 kg CO2/MWh, divulgado pelo MCTI. É fator médio (para inventários); projetos formais usam a margem de operação."
   }
 }

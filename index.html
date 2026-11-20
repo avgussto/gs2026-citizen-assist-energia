@@ -30,9 +30,9 @@
         </div>
         <div class="bill" aria-label="Resumo do cenário ilustrativo">
           <div class="bill-top"><span>Conta de referência</span><span>01 mês</span></div>
-          <div class="bill-value"><strong id="hero-consumo">200</strong><span>kWh</span></div>
+          <div class="bill-value"><strong id="hero-consumo">250</strong><span>kWh</span></div>
           <div class="bill-rule"></div>
-          <div class="bill-row"><span>Cenário inicial</span><strong id="hero-valor">R$ 180,00</strong></div>
+          <div class="bill-row"><span>Cenário inicial</span><strong id="hero-valor">R$ 225,00</strong></div>
           <div class="bill-row"><span>Valores ilustrativos</span><span>Edite abaixo</span></div>
           <p>A simulação usa 12 meses iguais. Não substitui a fatura nem um projeto de instalação.</p>
         </div>
@@ -47,13 +47,17 @@
                 <legend>Conta mensal</legend>
                 <div class="field-row">
                   <label for="consumo">Consumo da casa <span>kWh/mês</span></label>
-                  <input id="consumo" name="consumo" type="number" min="1" max="100000" step="0.1" required value="200">
+                  <input id="consumo" name="consumo" type="number" min="1" max="100000" step="0.1" required value="250">
                 </div>
                 <div class="field-row">
                   <label for="tarifa">Valor por kWh <span>R$/kWh</span></label>
                   <input id="tarifa" name="tarifa" type="number" min="0.01" max="100" step="0.01" required value="0.90">
                 </div>
-                <p class="field-note">Se tiver uma fatura, use nela o custo variável por kWh. R$ 0,90 é apenas uma hipótese de estudo.</p>
+                <div class="field-row">
+                  <label for="ligacao">Tipo de ligação <span>mínimo cobrado</span></label>
+                  <select id="ligacao" name="ligacao" required><option value="monofasico">Monofásica (30 kWh)</option><option value="bifasico" selected>Bifásica (50 kWh)</option><option value="trifasico">Trifásica (100 kWh)</option></select>
+                </div>
+                <p class="field-note">Se tiver uma fatura, use nela o custo variável por kWh e o tipo de ligação. R$ 0,90 é apenas uma hipótese de estudo.</p>
               </fieldset>
               <fieldset>
                 <legend>Banhos da família</legend>
@@ -63,6 +67,7 @@
                   <div class="field-row"><label for="banho-atual">Hoje <span>min/banho</span></label><input id="banho-atual" name="banho-atual" type="number" min="0" max="120" step="0.5" required value="10"></div>
                   <div class="field-row"><label for="banho-proposto">Proposta <span>min/banho</span></label><input id="banho-proposto" name="banho-proposto" type="number" min="0" max="120" step="0.5" required value="8"></div>
                 </div>
+                <div class="field-row"><label for="vazao">Vazão do chuveiro <span>litros/min</span></label><input id="vazao" name="vazao" type="number" min="0" max="30" step="0.5" required value="4"></div>
               </fieldset>
               <fieldset>
                 <legend>Energia solar</legend>
@@ -71,7 +76,7 @@
                 <p class="field-note">R$ 7.240: média nacional de 2 kWp em junho de 2025. Solicite orçamento local antes de decidir.</p>
               </fieldset>
             </div>
-            <div class="form-actions"><p>Referência: 30 dias por mês, 4,5 horas de sol pico por dia e rendimento solar de 75%.</p><button type="submit">Atualizar comparação</button></div>
+            <div class="form-actions"><p>Referência: 30 dias por mês, 4,5 horas de sol pico por dia, rendimento solar de 75% e 38,5 kg de CO₂ por MWh da rede (MCTI, 2023).</p><button type="submit">Atualizar comparação</button></div>
             <p class="form-error" id="form-error" role="alert" hidden></p>
           </form>
         </div>
@@ -83,14 +88,14 @@
           <article class="option option-bath">
             <div class="option-heading"><span class="option-symbol" aria-hidden="true">↓</span><div><h3>Banhos mais curtos</h3><p>Mudar o uso, sem obra</p></div></div>
             <div class="metric"><strong id="bath-energy">22 kWh</strong><span>menos energia por mês</span></div>
-            <dl><div><dt>Valor anual teórico</dt><dd id="bath-value">R$ 237,60</dd></div><div><dt>Custo inicial</dt><dd>R$ 0*</dd></div><div><dt>Consumo restante</dt><dd id="bath-remaining">178 kWh/mês</dd></div></dl>
+            <dl><div><dt>Valor anual teórico</dt><dd id="bath-value">R$ 237,60</dd></div><div><dt>Custo inicial</dt><dd>R$ 0*</dd></div><div><dt>Consumo restante</dt><dd id="bath-remaining">228 kWh/mês</dd></div><div><dt>Chuveiro hoje</dt><dd id="bath-share">44% do consumo</dd></div><div><dt>Água economizada</dt><dd id="bath-water">960 L/mês</dd></div><div><dt>CO₂ evitado</dt><dd id="bath-co2">10,2 kg/ano</dd></div></dl>
             <p class="option-note">*Sem compra de equipamento. Depende de manter o novo tempo de banho; a temperatura e a potência reais mudam o resultado.</p>
           </article>
           <article class="option option-solar">
             <div class="option-heading"><span class="option-symbol sun" aria-hidden="true">☼</span><div><h3>Solar no telhado</h3><p>Gerar eletricidade renovável</p></div></div>
             <div class="metric"><strong id="solar-energy">202,5 kWh</strong><span>geração estimada por mês</span></div>
-            <dl><div><dt>Valor anual bruto máximo</dt><dd id="solar-value">R$ 2.160,00</dd></div><div><dt>Investimento de referência</dt><dd id="solar-cost">R$ 7.240,00</dd></div><div><dt>Geração acima do consumo</dt><dd id="solar-excess">2,5 kWh/mês</dd></div></dl>
-            <p class="option-note">Este valor anual é um teto simplificado: não desconta tributos, uso da rede, custo de disponibilidade ou perdas na compensação. Exige telhado adequado, orçamento e aprovação da distribuidora.</p>
+            <dl><div><dt>Valor anual bruto máximo</dt><dd id="solar-value">R$ 2.160,00</dd></div><div><dt>Investimento de referência</dt><dd id="solar-cost">R$ 7.240,00</dd></div><div><dt>Abate possível na conta</dt><dd id="solar-usable">200 kWh/mês</dd></div><div><dt>Geração sem uso na conta</dt><dd id="solar-excess">2,5 kWh/mês</dd></div><div><dt>Retorno simples</dt><dd id="solar-payback">3,4 anos</dd></div><div><dt>CO₂ da rede evitado</dt><dd id="solar-co2">93,6 kg/ano</dd></div></dl>
+            <p class="option-note">O abate já desconta o custo de disponibilidade da ligação. O valor anual ainda é um teto: não desconta tributos, a cobrança gradual do Fio B (Lei 14.300) ou manutenção, por isso o retorno real tende a ser mais longo. Exige telhado adequado, orçamento e aprovação da distribuidora.</p>
           </article>
         </div>
         <div class="interpretation"><span aria-hidden="true">✳</span><p id="interpretation-text">Começar por hábitos de consumo custa menos. Energia solar exige investimento e avaliação do imóvel.</p></div>
@@ -105,11 +110,11 @@
 
       <section class="method shell" id="metodo" aria-labelledby="method-title">
         <div class="section-head"><div><p class="section-number">4 / Transparência</p><h2 id="method-title">Como chegamos aos valores</h2></div><p>As duas alternativas usam os mesmos 30 dias por mês e 12 meses por ano.</p></div>
-        <div class="method-grid"><div><h3>Banho</h3><p><code>kWh = (W ÷ 1000) × (minutos ÷ 60) × pessoas × 30</code></p><p>Aplicamos a fórmula ao tempo atual e ao tempo proposto. A diferença é limitada ao consumo mensal informado.</p></div><div><h3>Solar</h3><p><code>kWh = kWp × horas de sol pico × 0,75 × 30</code></p><p>O valor financeiro considera no máximo o consumo informado, sem atribuir dinheiro à geração excedente.</p></div><div><h3>Custo e ambiente</h3><p><code>R$/ano = kWh/mês × tarifa × 12</code></p><p>É uma aproximação bruta. Menos consumo reduz a energia solicitada à rede; painéis solares geram energia renovável, mas sua fabricação e descarte têm impactos.</p></div></div>
+        <div class="method-grid"><div><h3>Banho</h3><p><code>kWh = (W ÷ 1000) × (minutos ÷ 60) × pessoas × 30</code></p><p>Aplicamos a fórmula ao tempo atual e ao tempo proposto. A diferença é limitada ao consumo mensal informado.</p></div><div><h3>Solar</h3><p><code>kWh = kWp × horas de sol pico × 0,75 × 30</code></p><p><code>abate = mínimo(geração, consumo − custo de disponibilidade)</code></p><p><code>retorno simples (anos) = investimento ÷ (abate × tarifa × 12)</code></p><p>A conta nunca fica abaixo do mínimo da ligação (30, 50 ou 100 kWh). A geração além disso não recebe valor.</p></div><div><h3>Custo e ambiente</h3><p><code>R$/ano = kWh/mês × tarifa × 12</code></p><p><code>CO₂ (kg/ano) = kWh/ano × 0,0385</code></p><p><code>água (L/mês) = vazão × minutos a menos × pessoas × 30</code></p><p>São aproximações brutas. O fator de CO₂ é a média da rede brasileira; ela é majoritariamente renovável, por isso os valores são pequenos. Menos consumo reduz a energia solicitada à rede; painéis solares geram energia renovável, mas sua fabricação e descarte têm impactos.</p></div></div>
         <p class="method-warning">A energia solar não garante redução equivalente da fatura. Tarifas, impostos, regras de compensação, sazonalidade, sombras e orientação do telhado exigem análise individual.</p>
       </section>
 
-      <section class="sources shell" id="fontes" aria-labelledby="sources-title"><p class="section-number">5 / Referências</p><h2 id="sources-title">Dados que você pode verificar</h2><ul><li><a href="https://www.epe.gov.br/pt/publicacoes-dados-abertos/publicacoes/anuario-estatistico-de-energia-eletrica" target="_blank" rel="noopener noreferrer">EPE — Anuário Estatístico de Energia Elétrica</a><span>Contexto do consumo residencial. O cenário de 200 kWh é ilustrativo.</span></li><li><a href="https://www.gov.br/aneel/pt-br/centrais-de-conteudos/relatorios-e-indicadores/tarifas-e-informacoes-economico-financeiras" target="_blank" rel="noopener noreferrer">ANEEL — Tarifas e composição da fatura</a><span>Tarifas variam e não incluem todos os itens da conta.</span></li><li><a href="https://www.cresesb.cepel.br/?section=sundata" target="_blank" rel="noopener noreferrer">CRESESB — SunData</a><span>Consulta de irradiação para dimensionamento solar.</span></li><li><a href="https://canalsolar.com.br/wp-content/uploads/2025/09/link.pdf" target="_blank" rel="noopener noreferrer">Greener — Pesquisa GD, junho de 2025</a><span>Referência de preço de 2 kWp e fator de desempenho.</span></li><li><a href="https://www.gov.br/aneel/pt-br/assuntos/geracao-distribuida/" target="_blank" rel="noopener noreferrer">ANEEL — Micro e minigeração distribuída</a><span>Regras e custos de disponibilidade.</span></li></ul><p class="source-date">Fontes consultadas em 09/11/2026. Detalhes, premissas e cálculos estão no repositório.</p></section>
+      <section class="sources shell" id="fontes" aria-labelledby="sources-title"><p class="section-number">5 / Referências</p><h2 id="sources-title">Dados que você pode verificar</h2><ul><li><a href="https://www.epe.gov.br/pt/publicacoes-dados-abertos/publicacoes/anuario-estatistico-de-energia-eletrica" target="_blank" rel="noopener noreferrer">EPE — Anuário Estatístico de Energia Elétrica</a><span>Contexto do consumo residencial. O cenário de 200 kWh é ilustrativo.</span></li><li><a href="https://www.gov.br/aneel/pt-br/centrais-de-conteudos/relatorios-e-indicadores/tarifas-e-informacoes-economico-financeiras" target="_blank" rel="noopener noreferrer">ANEEL — Tarifas e composição da fatura</a><span>Tarifas variam e não incluem todos os itens da conta.</span></li><li><a href="https://www.cresesb.cepel.br/?section=sundata" target="_blank" rel="noopener noreferrer">CRESESB — SunData</a><span>Consulta de irradiação para dimensionamento solar.</span></li><li><a href="https://canalsolar.com.br/wp-content/uploads/2025/09/link.pdf" target="_blank" rel="noopener noreferrer">Greener — Pesquisa GD, junho de 2025</a><span>Referência de preço de 2 kWp e fator de desempenho.</span></li><li><a href="https://www.gov.br/aneel/pt-br/assuntos/geracao-distribuida/" target="_blank" rel="noopener noreferrer">ANEEL — Micro e minigeração distribuída</a><span>Regras e custos de disponibilidade.</span></li><li><a href="https://www.planalto.gov.br/ccivil_03/_ato2019-2022/2022/lei/l14300.htm" target="_blank" rel="noopener noreferrer">Lei 14.300/2022 — Marco legal da geração distribuída</a><span>Transição da cobrança do Fio B sobre a energia compensada.</span></li><li><a href="https://www.gov.br/mcti/pt-br/acompanhe-o-mcti/sirene/dados-e-ferramentas/fatores-de-emissao" target="_blank" rel="noopener noreferrer">MCTI — Fatores de emissão do SIN</a><span>Fator médio de 2023: 38,5 kg de CO₂ por MWh.</span></li></ul><p class="source-date">Fontes consultadas em 19/11/2026. Detalhes, premissas e cálculos estão no repositório.</p></section>
     </main>
     <footer class="site-footer"><div class="shell"><strong>Citizen Assist AI</strong><span>Energia explicada para decisões mais conscientes.</span><a href="#inicio">Voltar ao início ↑</a></div></footer>
     <button type="button" class="chat-launcher" id="chat-launcher" data-open-assistant aria-controls="chat-panel" aria-expanded="false" aria-label="Abrir assistente de energia"><span class="chat-launcher-icon" aria-hidden="true">✳</span><span>Perguntar</span></button>
